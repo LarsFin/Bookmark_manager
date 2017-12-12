@@ -3,7 +3,7 @@ require 'dm-postgres-adapter'
 
 class Link
 
-  attr_reader :id, :name, :url
+  attr_reader :name, :url
 
   include DataMapper::Resource
 

@@ -2,16 +2,22 @@
 ol {
   position: absolute;
   left: 45%;
-  top: 7%
+  top: 9%
 }
 
 h1 {
   position: absolute;
   left: 49%;
 }
+h2 {
+  position: absolute;
+  left: 47%;
+  top: 5%
+}
 </style>
 <h1>Bookmark</h1>
-<ol>
+<h2> To add a link click <a href="/addlink">here</a> </h2>
+<ol id='links'>
 <% @links.reverse.each { |link| %>
   <li style="text-align: left"><%= "#{link.name} - #{link.url}" %></li>
 <% } %>
