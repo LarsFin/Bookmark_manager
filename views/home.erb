@@ -1,4 +1,18 @@
-<center>
+<style>
+ol {
+  position: absolute;
+  left: 45%;
+  top: 7%
+}
+
+h1 {
+  position: absolute;
+  left: 49%;
+}
+</style>
 <h1>Bookmark</h1>
-<%= @database %>
-</center>
+<ol>
+<% @links.reverse.each { |link| %>
+  <li style="text-align: left"><%= "#{link.name} - #{link.url}" %></li>
+<% } %>
+</ol>
