@@ -11,21 +11,30 @@ feature "testing infrastructure" do
       expect(page).to have_content("Bookmark")
     end
 
-    scenario "homepage should have a link" do
-      Link.create(url: 'http://www.test01.com', name: 'Test01')
-
-      visit_home
-
-      within 'ol#links' do
-        expect(page).to have_content("Test01 - http://www.test01.com")
-      end
-
-    end
-
     scenario "Should have a link to go to add link page" do
       expect(page).to have_link("here")
       click_link("here")
       expect(page).to have_content("Add-link")
+    end
+
+    scenario "Should have a search for tag field" do
+      expect(page).to have_field('search_tag')
+    end
+
+  end
+
+  feature '#searching a tag' do
+
+    scenario 'Submitting a tag will bring you to a page with only the specific tags' do
+      visit_addlink
+      add_test03_tag_link
+      visit_addlink
+      add_test04_spectag_link
+      fill_in 'search_tag', with: 'testing04'
+      click_button('search')
+
+      expect(page).not_to have_content('Test03')
+      expect(page).to have_content('Test04')
     end
 
   end
@@ -58,6 +67,23 @@ feature "testing infrastructure" do
       add_test02_link
 
       expect(page).to have_content("Test02 - http://www.Test02.com")
+    end
+
+    feature 'User can add tags' do
+
+      scenario 'Add link page should have an enter tag field' do
+        visit_addlink
+
+        expect(page).to have_field('tag')
+      end
+
+      scenario 'Tags should be added to the links' do
+        visit_addlink
+        add_test03_tag_link
+
+        expect(page).to have_content("Test03 - http://www.Test03.com #Tags; testing")
+      end
+
     end
 
   end

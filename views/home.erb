@@ -14,11 +14,22 @@ h2 {
   left: 47%;
   top: 5%
 }
+form {
+  position: absolute;
+  left: 25%;
+  top: 10%
+}
 </style>
 <h1>Bookmark</h1>
 <h2> To add a link click <a href="/addlink">here</a> </h2>
 <ol id='links'>
 <% @links.reverse.each { |link| %>
-  <li style="text-align: left"><%= "#{link.name} - #{link.url}" %></li>
+  <li style="text-align: left"><%= "#{link.name} - #{link.url} #Tags; #{link.tag.map(&:name).join(' ')}" %></li>
 <% } %>
 </ol>
+<br>
+<form action='search' method="post">
+  <p>Search a tag</p>
+  <input type='text' name='search_tag' placeholder='Search...'>
+  <input type='submit' value='search'>
+</form>
