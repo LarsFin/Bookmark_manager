@@ -37,21 +37,21 @@ feature "testing infrastructure" do
       expect { sign_up_as_test_2 }.to change(User, :count).by(1)
     end
 
-    scenario "mismatched password input should not create a new user" do
+    scenario "Mismatched password input should not create a new user" do
       sign_up_as_test
       visit_sign_up
       expect { sign_up_incorrectly }.not_to change(User, :count)
     end
 
-    scenario "unsucessful sign up doesn't redirect to homepage" do
+    scenario "Unsucessful sign up doesn't redirect to homepage" do
       sign_up_incorrectly
       expect(page).to have_field('email')
     end
 
-    scenario 'unsucessful sign up dislays a message' do
-      expect(page).not_to have_content('Password and confirmation password do not match')
+    scenario 'Unsucessful sign up dislays a message' do
+      expect(page).not_to have_content('Password does not match the confirmation')
       sign_up_incorrectly
-      expect(page).to have_content('Password and confirmation password do not match')
+      expect(page).to have_content('Password does not match the confirmation')
     end
 
     scenario 'Should not be able to sign up when leaving a blank email address' do
@@ -66,6 +66,12 @@ feature "testing infrastructure" do
       expect { sign_up_incorrectly_wrong_format }.not_to change(User, :count)
     end
 
+    scenario 'Unable to register two users with identical email' do
+      sign_up_as_test
+      visit_sign_up
+      sign_up_as_test
+      expect(page).to have_content('We already have that email')
+    end
   end
 
   feature '#homepage' do

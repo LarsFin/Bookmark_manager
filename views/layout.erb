@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
-  <% if flash[:notice] %>
-  <div id='notice'><%= flash[:notice] %></div>
+  <% if flash[:errors] %>
+  <ul id='errors'>
+    <% flash[:errors].each { |error| %>
+      <li><%= error %></li>
+    <% } %>
+  </ul>
   <% end %>
 
   <head>
