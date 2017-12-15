@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+  <% if flash[:notice] %>
+  <div id='notice'><%= flash[:notice] %></div>
+  <% end %>
+
   <head>
     <title>BOOKMARK</title>
   </head>

@@ -1,6 +1,7 @@
 ENV['RACK_ENV'] ||= 'development'
 
 require 'sinatra/base'
+require 'sinatra/flash'
 require './datamapper_setup.rb'
 require './lib/models/link'
 require './lib/models/tag'
@@ -9,7 +10,8 @@ require './lib/models/user'
 class Bookmark < Sinatra::Base
 
   enable :sessions
-  set :session_secret, 'Smough'
+  set :session_secret, 'Sif'
+  register Sinatra::Flash
 
   get '/sign_up' do
     erb(:sign_up)
@@ -20,9 +22,14 @@ class Bookmark < Sinatra::Base
     DataMapper.auto_upgrade!
     user = User.create(email: params[:email], password: params[:password],
       password_confirmation: params[:confirm_password])
-    session[:user_id] = user.id
-    session[:email] = params[:email]
-    redirect '/home'
+    if params[:password] != params[:confirm_password] || params[:password] == ""
+      flash.next[:notice] = "Password and confirmation password do not match"
+      redirect '/sign_up'
+    else
+      session[:user_id] = user.id
+      session[:email] = params[:email]
+      redirect '/home'
+    end
   end
 
   get '/home' do

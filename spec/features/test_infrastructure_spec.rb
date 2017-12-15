@@ -43,6 +43,17 @@ feature "testing infrastructure" do
       expect { sign_up_incorrectly }.not_to change(User, :count)
     end
 
+    scenario "unsucessful sign up doesn't redirect to homepage" do
+      sign_up_incorrectly
+      expect(page).to have_field('email')
+    end
+
+    scenario 'unsucessful sign up dislays a message' do
+      expect(page).not_to have_content('Password and confirmation password do not match')
+      sign_up_incorrectly
+      expect(page).to have_content('Password and confirmation password do not match')
+    end
+
   end
 
   feature '#homepage' do
