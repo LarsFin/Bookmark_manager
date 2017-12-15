@@ -13,6 +13,10 @@ feature "testing infrastructure" do
       expect(page).to have_field('password')
     end
 
+    scenario "Sign in page has a sign up form" do
+      expect(page).to have_field('confirm_password')
+    end
+
     scenario "Sign in page has a form sign up button" do
       expect(page).to have_button('Sign up')
     end
@@ -31,6 +35,12 @@ feature "testing infrastructure" do
       sign_up_as_test
       visit_sign_up
       expect { sign_up_as_test_2 }.to change(User, :count).by(1)
+    end
+
+    scenario "mismatched password input should not create a new user" do
+      sign_up_as_test
+      visit_sign_up
+      expect { sign_up_incorrectly }.not_to change(User, :count)
     end
 
   end

@@ -18,7 +18,8 @@ class Bookmark < Sinatra::Base
   post '/signed_up' do
     DataMapper.finalize
     DataMapper.auto_upgrade!
-    user = User.create(email: params[:email], password: params[:password])
+    user = User.create(email: params[:email], password: params[:password],
+      password_confirmation: params[:confirm_password])
     session[:user_id] = user.id
     session[:email] = params[:email]
     redirect '/home'
