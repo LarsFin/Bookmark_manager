@@ -72,6 +72,16 @@ feature "testing infrastructure" do
       sign_up_as_test
       expect(page).to have_content('We already have that email')
     end
+
+    scenario 'User can log in' do
+      login_as_asd
+      expect(page).to have_content('Search a tag')
+    end
+
+    scenario 'Welcome message appears upon successful login' do
+      login_as_asd
+      expect(page).to have_content('Welcome asd@hotmail.com')
+    end
   end
 
   feature '#homepage' do
