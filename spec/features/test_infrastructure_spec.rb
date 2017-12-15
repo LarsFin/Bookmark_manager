@@ -1,6 +1,40 @@
 require_relative '../../app.rb'
 
 feature "testing infrastructure" do
+
+  feature "#sign up page" do
+
+    before do
+      visit_sign_up
+    end
+
+    scenario "Sign in page has a sign up form" do
+      expect(page).to have_field('email')
+      expect(page).to have_field('password')
+    end
+
+    scenario "Sign in page has a form sign up button" do
+      expect(page).to have_button('Sign up')
+    end
+
+    scenario "Submitting form brings you to the homepage" do
+      sign_up_as_test
+      expect(page).to have_content('Welcome')
+    end
+
+    scenario "Checks that email is the same as the persons who logged in" do
+      sign_up_as_test
+      expect(page).to have_content('Welcome test@hotmail.com')
+    end
+
+    scenario "User count should increase by 1" do
+      sign_up_as_test
+      visit_sign_up
+      expect { sign_up_as_test_2 }.to change(User, :count).by(1)
+    end
+
+  end
+
   feature '#homepage' do
 
     before do
@@ -49,7 +83,7 @@ feature "testing infrastructure" do
       expect(page.status_code).to be 200
     end
 
-    scenario "addlinkn page should have a field for link name" do
+    scenario "addlink page should have a field for link name" do
       expect(page).to have_field("name") and have_field("url")
     end
 
@@ -82,6 +116,13 @@ feature "testing infrastructure" do
         add_test03_tag_link
 
         expect(page).to have_content("Test03 - http://www.Test03.com #Tags; testing")
+      end
+
+      scenario 'Can add multiple tags which are recognized as seperate' do
+        visit_addlink
+        add_test05_multtag_link
+        link = Link.first
+        expect(link.tag.count).to eq 2
       end
 
     end

@@ -1,14 +1,32 @@
-ENV['RACK_ENV'] ||= 'dev'
+ENV['RACK_ENV'] ||= 'development'
 
 require 'sinatra/base'
 require './datamapper_setup.rb'
 require './lib/models/link'
 require './lib/models/tag'
+require './lib/models/user'
 
 class Bookmark < Sinatra::Base
 
+  enable :sessions
+  set :session_secret, 'Smough'
+
+  get '/sign_up' do
+    erb(:sign_up)
+  end
+
+  post '/signed_up' do
+    DataMapper.finalize
+    DataMapper.auto_upgrade!
+    user = User.create(email: params[:email], password: params[:password])
+    session[:user_id] = user.id
+    session[:email] = params[:email]
+    redirect '/home'
+  end
+
   get '/home' do
     @links = Link.all
+    @email = session[:email]
     # @single = Link.get(9)
     # p @single
     erb(:home)
@@ -20,8 +38,10 @@ class Bookmark < Sinatra::Base
 
   post '/addedlink' do
     link = Link.create(url: params[:url], name: params[:name])
-    tag = Tag.first_or_create(name: params[:tag])
-    link.tag << tag
+    #tag = Tag.first_or_create(name: params[:tag])
+    (params[:tag].split(', ')).each { |tagname|
+      link.tag << Tag.first_or_create(name: tagname)
+    }
     link.save
     redirect '/home'
   end
@@ -34,6 +54,12 @@ class Bookmark < Sinatra::Base
     tag = Tag.first(name: params[:search_tag])
     @links = (tag ? tag.link : [])
     erb(:searched)
+  end
+
+  helpers do
+    def current_user
+      @current_user ||= User.get(session[:user_id])
+    end
   end
 
 end

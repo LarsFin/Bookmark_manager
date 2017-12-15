@@ -1,5 +1,6 @@
 require 'data_mapper'
 require 'dm-postgres-adapter'
+require 'dm-migrations'
 require_relative './lib/models/link.rb'
 require_relative './lib/models/tag.rb'
 
