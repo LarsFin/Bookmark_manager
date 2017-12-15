@@ -54,6 +54,18 @@ feature "testing infrastructure" do
       expect(page).to have_content('Password and confirmation password do not match')
     end
 
+    scenario 'Should not be able to sign up when leaving a blank email address' do
+      sign_up_as_test
+      visit_sign_up
+      expect { sign_up_incorrectly_nomail }.not_to change(User, :count)
+    end
+
+    scenario 'Should not be able to sign up when leaving a blank email address' do
+      sign_up_as_test
+      visit_sign_up
+      expect { sign_up_incorrectly_wrong_format }.not_to change(User, :count)
+    end
+
   end
 
   feature '#homepage' do

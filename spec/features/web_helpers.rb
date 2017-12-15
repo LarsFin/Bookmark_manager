@@ -45,15 +45,29 @@ def sign_up_as_test
 end
 
 def sign_up_as_test_2
-  fill_in 'email', with: 'test@hotmail.com'
+  fill_in 'email', with: 'test2@hotmail.com'
   fill_in 'password', with: 'password'
   fill_in 'confirm_password', with: 'password'
   click_button 'Sign up'
 end
 
 def sign_up_incorrectly
-  fill_in 'email', with: 'test@hotmail.com'
+  fill_in 'email', with: 'test3@hotmail.com'
   fill_in 'password', with: 'password'
   fill_in 'confirm_password', with: 'wrong'
+  click_button 'Sign up'
+end
+
+def sign_up_incorrectly_nomail
+  fill_in 'email', with: ''
+  fill_in 'password', with: 'password'
+  fill_in 'confirm_password', with: 'password'
+  click_button 'Sign up'
+end
+
+def sign_up_incorrectly_wrong_format
+  fill_in 'email', with: 'doggo'
+  fill_in 'password', with: 'password'
+  fill_in 'confirm_password', with: 'password'
   click_button 'Sign up'
 end

@@ -22,7 +22,7 @@ class Bookmark < Sinatra::Base
     DataMapper.auto_upgrade!
     user = User.create(email: params[:email], password: params[:password],
       password_confirmation: params[:confirm_password])
-    if params[:password] != params[:confirm_password] || params[:password] == ""
+    if !user.save 
       flash.next[:notice] = "Password and confirmation password do not match"
       redirect '/sign_up'
     else
