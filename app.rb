@@ -32,6 +32,18 @@ class Bookmark < Sinatra::Base
     end
   end
 
+  post '/logged_in' do
+    user = User.first(email: params[:user_email])
+    # redirect '/sign_up' if !user
+    if (BCrypt::Password.new(user.password_digest) == params[:user_password])
+      session[:user_id] = user.id
+      session[:email] = user.email
+      redirect '/home'
+    else
+      redirect '/sign_up'
+    end
+  end
+
   get '/home' do
     @links = Link.all
     @email = session[:email]

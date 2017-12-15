@@ -74,11 +74,15 @@ feature "testing infrastructure" do
     end
 
     scenario 'User can log in' do
+      sign_up_as_asd
+      visit('/sign_up')
       login_as_asd
       expect(page).to have_content('Search a tag')
     end
 
     scenario 'Welcome message appears upon successful login' do
+      sign_up_as_asd
+      visit('/sign_up')
       login_as_asd
       expect(page).to have_content('Welcome asd@hotmail.com')
     end

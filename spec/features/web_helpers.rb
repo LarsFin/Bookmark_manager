@@ -72,6 +72,13 @@ def sign_up_incorrectly_wrong_format
   click_button 'Sign up'
 end
 
+def sign_up_as_asd
+  fill_in 'email', with: 'asd@hotmail.com'
+  fill_in 'password', with: 'asd'
+  fill_in 'confirm_password', with: 'asd'
+  click_button 'Sign up'
+end
+
 def login_as_asd
   fill_in 'user_email', with: 'asd@hotmail.com'
   fill_in 'user_password', with: 'asd'
